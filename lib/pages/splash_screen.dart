@@ -97,9 +97,13 @@ class SplashScreen extends GetView<SplashScreenController> {
               ],
             ),
             SizedBox(height: 16,),
-            Text(
-              'Raithan'.tr,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            SizedBox(
+              width: screenWidth * (5 / 6),
+              child: Text(
+                'Raithan'.tr,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
             ),
           ],
 

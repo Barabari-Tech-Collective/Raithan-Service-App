@@ -5,7 +5,7 @@ class Languages extends Translations{
   @override
   Map<String, Map<String,String>> get keys =>{
     'en':{
-      'Raithan' : 'Raithan',
+      'Raithan' : 'Raithan Agri Logistic Private Limited',
       'Business Categories' : 'Business Categories',
       'Mechanics' : 'Mechanics',
       'Paddy Transplantors' : 'Paddy Transplantors',
