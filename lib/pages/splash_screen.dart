@@ -1,4 +1,3 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../constants/routes/route_name.dart';
@@ -19,9 +18,7 @@ class SplashScreen extends GetView<SplashScreenController> {
     String? userRole = await Storage.getValue(StorageKeys.USER_ROLE);
     String? currentPhase = await Storage.getValue(StorageKeys.CURRENT_PHASE);
     String? jwtToken = await Storage.getValue(StorageKeys.JWT_TOKEN);
-
-    await Firebase.initializeApp();
-
+    
     AuthController authController = Get.find();
 
     authController.activeSession.value = false;

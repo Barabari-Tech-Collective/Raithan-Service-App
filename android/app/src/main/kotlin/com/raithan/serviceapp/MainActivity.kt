@@ -1,4 +1,4 @@
-package com.example.raithan_serviceapp
+package com.raithan.serviceapp
 
 import io.flutter.embedding.android.FlutterActivity
 

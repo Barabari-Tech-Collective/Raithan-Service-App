@@ -48,6 +48,3 @@ app.*.map.json
 .env
 .env.*
 !*.example
-
-# Crashlytics/Firebase local tracking
-android/.firebase/

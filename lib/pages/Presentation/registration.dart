@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dotted_line/dotted_line.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -106,60 +105,12 @@ class _RegistrationState extends State<Registration> {
   double containerHeroHeight = 0;
   double containerNextButtonHeight = 0;
 
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Future<void> verifyOTP(String verificationId) async {
-    try {
-      PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: verificationId,
-        smsCode: '123123'
-      );
-
-      UserCredential userCredential = await _auth.signInWithCredential(credential);
-
-      String? idToken = await userCredential.user?.getIdToken();
-
-      if (idToken != null) {
-        // Send this ID token to your backend
-       print(idToken);
-      } else {
-        print("Failed to retrieve ID token.");
-      }
-    } catch (e) {
-      showSnackBar("Failed to verify OTP. Error: $e");
-    }
-  }
 
   void showSnackBar(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message)),
     );
-  }
-
-  // Function to send OTP
-  Future<void> sendOTP() async {
-    try {
-      await _auth.verifyPhoneNumber(
-        phoneNumber: '+917202959020',
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          // Automatically sign in the user on successful OTP verification
-          await _auth.signInWithCredential(credential);
-          print("done");
-        },
-        verificationFailed: (FirebaseAuthException e) {
-           print("failed");
-        },
-        codeSent: (String verificationId, int? resendToken) {
-          print(verificationId);
-          // verifyOTP(verificationId);
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          print("verification id " + verificationId);
-        },
-      );
-    } catch (e) {
-      print("failed to sent otp");
-    }
   }
 
 
