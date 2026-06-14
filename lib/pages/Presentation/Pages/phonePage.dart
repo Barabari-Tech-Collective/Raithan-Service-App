@@ -29,7 +29,7 @@ class PhonePage extends StatelessWidget {
             ),
           ),
           Text(
-            "You will get 6 digit OTP on your phone".tr,
+            "Enter your 10-digit mobile number".tr,
             style: robotoBold.copyWith(
               color: Colors.black45,
               fontSize: 12,

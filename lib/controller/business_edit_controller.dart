@@ -13,6 +13,10 @@ import '../constants/enums/custom_snackbar_status.dart';
 import '../network/BaseApiServices.dart';
 import '../network/NetworkApiService.dart';
 
+// imports that are to be remove only removed after complete migration to supabase
+import '../network/BaseApiServices.dart';
+import '../network/NetworkApiService.dart';
+
 class BusinessEditController extends GetxController{
 
   RxBool isLoading = false.obs;

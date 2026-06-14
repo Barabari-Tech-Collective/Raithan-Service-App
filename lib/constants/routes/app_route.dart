@@ -5,6 +5,7 @@ import 'package:raithan_serviceapp/pages/Presentation/Pages/business_edit.dart';
 import 'package:raithan_serviceapp/pages/Presentation/Pages/labor_edit.dart';
 import 'package:raithan_serviceapp/pages/Presentation/Pages/product_edit.dart';
 import 'package:raithan_serviceapp/pages/Presentation/ProductList.dart';
+import 'package:raithan_serviceapp/pages/Presentation/pending_verification.dart'; // NEW
 import 'package:raithan_serviceapp/pages/splash_screen.dart';
 
 import '../../pages/Presentation/Pages/profile.dart';
@@ -23,6 +24,10 @@ class AppRoutes {
         GetPage(name: RouteName.businessEdit, page: () => BusinessEdit()),
         GetPage(name: RouteName.products, page: () => ProductList()),
         GetPage(name: RouteName.editLaborDetails, page: () => LaborEdit()),
-        GetPage(name: RouteName.editProductDetails, page: () => ProductEdit())
+        GetPage(name: RouteName.editProductDetails, page: () => ProductEdit()),
+        GetPage(                                          // NEW
+          name: RouteName.pendingVerification,
+          page: () => const PendingVerificationPage(),
+        ),
       ];
 }

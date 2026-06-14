@@ -13,6 +13,10 @@ import 'package:http_parser/http_parser.dart';
 import '../Utils/utils.dart';
 import '../constants/enums/custom_snackbar_status.dart';
 
+// imports that are to be remove only removed after complete migration to supabase
+import '../network/BaseApiServices.dart';
+import '../network/NetworkApiService.dart';
+
 class ProfileController extends GetxController {
 
   RxBool isEditAllowed = false.obs;

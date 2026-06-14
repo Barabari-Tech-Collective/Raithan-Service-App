@@ -1,4 +1,4 @@
-class RouteName{
+class RouteName {
   static const String provider_home = '/provider_home';
   static const String profile = "/profile";
   static const String business = "/business";
@@ -9,4 +9,5 @@ class RouteName{
   static const String products = "/products";
   static const String editLaborDetails = "/editLaborDetails";
   static const String editProductDetails = "/editProductDetails";
+  static const String pendingVerification = "/pendingVerification"; // NEW
 }
