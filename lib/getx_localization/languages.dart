@@ -5,7 +5,14 @@ class Languages extends Translations{
   @override
   Map<String, Map<String,String>> get keys =>{
     'en':{
-      'Raithan' : 'Raithan Agri Logistic Private Limited',
+      'Raithan' : 'Raithan',
+      'Raithan_Agri_Logistic_Private_Limited' : 'Raithan Agri Logistic Private Limited',
+      'Enter your phone number to find services near you': 'Enter your phone number to find services near you',
+      'Find Services': 'Find Services',
+      'I am a Service Provider': 'I am a Service Provider',
+      'Almost There!': 'Almost There!',
+      'Oops !': 'Oops !',
+      'Something went wrong. Please try again.': 'Something went wrong. Please try again.',
       'Business Categories' : 'Business Categories',
       'Mechanics' : 'Mechanics',
       'Paddy Transplantors' : 'Paddy Transplantors',
@@ -190,6 +197,13 @@ class Languages extends Translations{
     },
     'hi': {
       'Raithan': 'रैथान',
+      'Raithan_Agri_Logistic_Private_Limited': 'रैथान एग्री लॉजिस्टिक्स प्राइवेट लिमिटेड',
+      'Enter your phone number to find services near you': 'अपने पास उपलब्ध सेवाएँ खोजने के लिए अपना फोन नंबर दर्ज करें',
+      'Find Services': 'सेवाएँ खोजें',
+      'I am a Service Provider': 'मैं एक सेवा प्रदाता हूँ',
+      'Almost There!': 'लगभग हो गया!',
+      'Oops !': 'ओह!',
+      'Something went wrong. Please try again.': 'कुछ गलत हो गया। कृपया पुनः प्रयास करें।',
       'Business Categories': 'बिजनेस कैटेगरी',
       'Mechanics': 'मेकैनिक्स',
       'Paddy Transplantors': 'धान रोपाई करने वाले',
@@ -372,7 +386,15 @@ class Languages extends Translations{
       'No Products': 'कोई उत्पाद नहीं'
 
     },
-    'te': { 'Raithan': 'రైతన్',
+    'te': { 
+      'Raithan': 'రైతన్',
+      'Raithan_Agri_Logistic_Private_Limited': 'రైతన్ అగ్రి లాజిస్టిక్స్ ప్రైవేట్ లిమిటెడ్',
+      'Enter your phone number to find services near you': 'మీ సమీపంలోని సేవలను కనుగొనడానికి మీ ఫోన్ నంబర్‌ను నమోదు చేయండి',
+      'Find Services': 'సేవలను కనుగొనండి',
+      'I am a Service Provider': 'నేను ఒక సేవా ప్రదాతను',
+      'Almost There!': 'దాదాపు పూర్తైంది!',
+      'Oops !': 'అయ్యో!',
+      'Something went wrong. Please try again.': 'ఏదో తప్పు జరిగింది. దయచేసి మళ్లీ ప్రయత్నించండి.',
       'Business Categories': 'వ్యవసాయ విభాగాలు',
       'Mechanics': 'యాంత్రికులు',
       'Paddy Transplantors': 'నాటు యంత్రాలు',

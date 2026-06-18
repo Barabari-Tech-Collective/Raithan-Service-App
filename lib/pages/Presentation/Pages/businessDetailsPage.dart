@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:raithan_serviceapp/Utils/app_dimensions.dart';
 import 'package:raithan_serviceapp/Utils/app_style.dart';
@@ -9,10 +10,7 @@ import 'package:raithan_serviceapp/constants/regex_constant.dart';
 
 import '../../../Widgets/dropDownTextFeild.dart';
 
-enum Gender { male, female, other }
-
 class Businessdetailspage extends StatefulWidget {
-
   final TextEditingController businessNameController;
   final TextEditingController pincodeController;
   final TextEditingController blockNumberController;
@@ -23,43 +21,38 @@ class Businessdetailspage extends StatefulWidget {
   final TextEditingController stateController;
   final TextEditingController startTimeController;
   final TextEditingController endTimeController;
-  final TextEditingController workingDaysController;
   final TextEditingController businessTypeController;
+  final TextEditingController mobileNumberController; // NEW
 
-
-  final Map<String, bool> workingDays ;
-
-  // Form key
+  final Map<String, bool> workingDays;
   final GlobalKey<FormState> formKey;
 
-   Businessdetailspage({
+  Businessdetailspage({
     super.key,
-     required this.businessNameController,
-     required this.pincodeController,
-     required this.blockNumberController,
-     required this.streetController,
-     required this.areaController,
-     required this.landmarkController,
-     required this.cityController,
-     required this.stateController,
-     required this.startTimeController,  // New parameter
-     required this.endTimeController,
-     required this.workingDaysController,
-     required this.workingDays,
-     required this.formKey,  // For
-     required this.businessTypeController
+    required this.businessNameController,
+    required this.pincodeController,
+    required this.blockNumberController,
+    required this.streetController,
+    required this.areaController,
+    required this.landmarkController,
+    required this.cityController,
+    required this.stateController,
+    required this.startTimeController,
+    required this.endTimeController,
+    required this.workingDays,
+    required this.formKey,
+    required this.businessTypeController,
+    required this.mobileNumberController, // NEW
   });
 
   @override
   State<Businessdetailspage> createState() => _BusinessDetailsPageState();
-
-
 }
 
 class _BusinessDetailsPageState extends State<Businessdetailspage> {
-
   late FocusNode businessNameFocusNode;
   late FocusNode businessTypeFocusNode;
+  late FocusNode mobileNumberFocusNode; // NEW
   late FocusNode pincodeFocusNode;
   late FocusNode blockNumberFocusNode;
   late FocusNode streetFocusNode;
@@ -67,31 +60,29 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
   late FocusNode landmarkFocusNode;
   late FocusNode cityFocusNode;
   late FocusNode stateFocusNode;
-  late FocusNode categoryFocusNode;
   late FocusNode workingTimeFocusNode;
 
+  @override
   void initState() {
     super.initState();
-
-    // Initialize FocusNodes
-    businessNameFocusNode = FocusNode();
-    pincodeFocusNode = FocusNode();
-    blockNumberFocusNode = FocusNode();
-    streetFocusNode = FocusNode();
-    areaFocusNode = FocusNode();
-    landmarkFocusNode = FocusNode();
-    cityFocusNode = FocusNode();
-    stateFocusNode = FocusNode();
-    categoryFocusNode = FocusNode();
-    workingTimeFocusNode = FocusNode();
-    businessTypeFocusNode = FocusNode();
-
+    businessNameFocusNode  = FocusNode();
+    businessTypeFocusNode  = FocusNode();
+    mobileNumberFocusNode  = FocusNode(); // NEW
+    pincodeFocusNode       = FocusNode();
+    blockNumberFocusNode   = FocusNode();
+    streetFocusNode        = FocusNode();
+    areaFocusNode          = FocusNode();
+    landmarkFocusNode      = FocusNode();
+    cityFocusNode          = FocusNode();
+    stateFocusNode         = FocusNode();
+    workingTimeFocusNode   = FocusNode();
   }
-
 
   @override
   void dispose() {
     businessNameFocusNode.dispose();
+    businessTypeFocusNode.dispose();
+    mobileNumberFocusNode.dispose(); // NEW
     pincodeFocusNode.dispose();
     blockNumberFocusNode.dispose();
     streetFocusNode.dispose();
@@ -99,37 +90,35 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
     landmarkFocusNode.dispose();
     cityFocusNode.dispose();
     stateFocusNode.dispose();
-    categoryFocusNode.dispose();
-
+    workingTimeFocusNode.dispose();
     super.dispose();
   }
 
-
-
-  Future<void> _selectTime(BuildContext context, TextEditingController controller) async {
-    TimeOfDay initialTime = TimeOfDay.now();
+  Future<void> _selectTime(
+      BuildContext context, TextEditingController controller) async {
     TimeOfDay? selectedTime = await showTimePicker(
       context: context,
-      initialTime: initialTime,
-      builder: (context, child1) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
-          child: child1!,
-        );
-      },
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) => MediaQuery(
+        data: MediaQuery.of(context)
+            .copyWith(alwaysUse24HourFormat: false),
+        child: child!,
+      ),
     );
     if (selectedTime != null) {
-      String formattedTime = selectedTime.format(context);
-      controller.value = TextEditingValue(text:Utils.convertTo12HourFormat(formattedTime));
+      controller.text =
+          Utils.convertTo12HourFormat(selectedTime.format(context));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: false),
+      data: MediaQuery.of(context)
+          .copyWith(alwaysUse24HourFormat: false),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: AppDimensions.formFieldPadding),
+        padding: EdgeInsets.symmetric(
+            horizontal: AppDimensions.formFieldPadding),
         child: Form(
           key: widget.formKey,
           child: Column(
@@ -141,10 +130,7 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 children: [
                   Text(
                     "Business Information".tr,
-                    style: robotoBold.copyWith(
-                      color: black,
-                      fontSize: 20,
-                    ),
+                    style: robotoBold.copyWith(color: black, fontSize: 20),
                   ),
                 ],
               ),
@@ -153,23 +139,19 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 controller: widget.businessNameController,
                 type: TextInputType.name,
                 focusNode: businessNameFocusNode,
-                onFieldSubmitted: (value){
-                   businessNameFocusNode.unfocus();
-                },
-                onChanged: (value){
-                  widget.formKey.currentState?.validate();
-                },
                 label: "Business Name ( Optional )".tr,
+                onFieldSubmitted: (_) => businessNameFocusNode.unfocus(),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
               ),
               sizedBox(),
               DropdownTextField(
                 controller: widget.businessTypeController,
-                label: "Select an Business Type".tr,
+                label: "Select a Business Type".tr,
                 focusNode: businessTypeFocusNode,
-                onFieldSubmitted: (value) {
-                  businessTypeFocusNode.unfocus();
-                },
-                options: BusinessType.values.map((type) => type.toString()).toList(),
+                onFieldSubmitted: (_) => businessTypeFocusNode.unfocus(),
+                options: BusinessType.values
+                    .map((t) => t.toString())
+                    .toList(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please select an option'.tr;
@@ -177,53 +159,36 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                   return null;
                 },
               ),
-            sizedBox(),
-            // Container(
-            //   padding: const EdgeInsets.only(top:0,bottom: 0,right:10.0,left: 10),
-            //   decoration: BoxDecoration(
-            //     borderRadius: BorderRadius.circular(8),
-            //     border: Border.all(color: Colors.grey),
-            //   ),
-            //   child: Theme(
-            //     data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
-            //     child: ExpansionTile(
-            //       onExpansionChanged: (isExpanding)
-            //         {
-            //            if(isExpanding)
-            //              {
-            //                FocusScope.of(context).requestFocus(categoryFocusNode);
-            //              }
-            //         },
-            //         tilePadding: EdgeInsets.zero, // Removes padding around the tile
-            //         collapsedBackgroundColor: Colors.transparent,
-            //         title: const Text("Select Business Categories",  style: TextStyle(
-            //           fontSize: AppDimensions.regularFontSize,
-            //           fontWeight: FontWeight.bold,
-            //         )),
-            //         children: [ ...widget.categories.keys.map((category) {
-            //           return CheckboxListTile(
-            //             title: Text(category),
-            //             value: widget.categories[category],
-            //             onChanged: (bool? value) {
-            //               setState(() {
-            //                 widget.categories[category] = value!;
-            //               });
-            //             },
-            //           );
-            //         }).toList(), ]
-            //     ),
-            //   ),
-            // ),
-            //   sizedBox(),
+              sizedBox(),
+              // ── Mobile number ───────────────────────────────────────────
+              CustomTextfield(
+                controller: widget.mobileNumberController,
+                type: TextInputType.phone,
+                focusNode: mobileNumberFocusNode,
+                label: "Business Contact Number".tr,
+                maxLength: 10,
+                isBuildCounterRequired: true,
+                onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                    context, mobileNumberFocusNode, blockNumberFocusNode),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a contact number'.tr;
+                  }
+                  if (!RegExp(r'^\d{10}$').hasMatch(value)) {
+                    return 'Enter a valid 10-digit number'.tr;
+                  }
+                  return null;
+                },
+              ),
+              // ───────────────────────────────────────────────────────────
+              sizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Business Address".tr,
-                    style: robotoBold.copyWith(
-                      color: black,
-                      fontSize: 20,
-                    ),
+                    style: robotoBold.copyWith(color: black, fontSize: 20),
                   ),
                 ],
               ),
@@ -233,15 +198,12 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 type: TextInputType.text,
                 label: "House Number".tr,
                 focusNode: blockNumberFocusNode,
-                onFieldSubmitted: (value){
-                  Utils.changeNodeFocus(context, blockNumberFocusNode, streetFocusNode);
-                },
-                onChanged: (value){
-                  widget.formKey.currentState?.validate();
-                },
+                onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                    context, blockNumberFocusNode, streetFocusNode),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Please write your home Number'.tr;
+                    return 'Please write your house number'.tr;
                   }
                   return null;
                 },
@@ -252,12 +214,9 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 type: TextInputType.text,
                 label: "Street".tr,
                 focusNode: streetFocusNode,
-                onFieldSubmitted: (value){
-                  Utils.changeNodeFocus(context,streetFocusNode,areaFocusNode);
-                },
-                onChanged: (value){
-                  widget.formKey.currentState?.validate();
-                },
+                onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                    context, streetFocusNode, areaFocusNode),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please write your street'.tr;
@@ -271,12 +230,9 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 type: TextInputType.text,
                 label: "Area".tr,
                 focusNode: areaFocusNode,
-                onFieldSubmitted: (value){
-                  Utils.changeNodeFocus(context,areaFocusNode,landmarkFocusNode);
-                },
-                onChanged: (value){
-                  widget.formKey.currentState?.validate();
-                },
+                onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                    context, areaFocusNode, landmarkFocusNode),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please write your area'.tr;
@@ -290,97 +246,83 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 type: TextInputType.text,
                 label: "Landmark".tr,
                 focusNode: landmarkFocusNode,
-                onFieldSubmitted: (value){
-                  Utils.changeNodeFocus(context,landmarkFocusNode,cityFocusNode);
-                },
-                onChanged: (value){
-                  widget.formKey.currentState?.validate();
-                },
+                onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                    context, landmarkFocusNode, cityFocusNode),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
               ),
               sizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              Container(
-                width: AppDimensions.width*0.43,
-                child: CustomTextfield(
-                  controller: widget.cityController,
-                  type: TextInputType.text,
-                  label: "City".tr,
-                  focusNode: cityFocusNode,
-                  onFieldSubmitted: (value){
-                    Utils.changeNodeFocus(context,cityFocusNode,stateFocusNode);
-                  },
-                  onChanged: (value){
-                    widget.formKey.currentState?.validate();
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please write your city'.tr;
-                    }
-                    return null;
-                  },
-                ),
-              ),
-              SizedBox(width: 3,),
-              Container(
-                width: AppDimensions.width*0.43,
-                child: CustomTextfield(
-                  controller: widget.stateController,
-                  type: TextInputType.text,
-                  label: "State".tr,
-                  focusNode: stateFocusNode,
-                  onFieldSubmitted: (value){
-                    Utils.changeNodeFocus(context,stateFocusNode,pincodeFocusNode);
-                  },
-                  onChanged: (value){
-                    widget.formKey.currentState?.validate();
-                  },
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please write your state'.tr;
-                    }
-                    return null;
-                  },
-                ),
-              )]
+                  SizedBox(
+                    width: AppDimensions.width * 0.43,
+                    child: CustomTextfield(
+                      controller: widget.cityController,
+                      type: TextInputType.text,
+                      label: "City".tr,
+                      focusNode: cityFocusNode,
+                      onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                          context, cityFocusNode, stateFocusNode),
+                      onChanged: (_) =>
+                          widget.formKey.currentState?.validate(),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please write your city'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  SizedBox(
+                    width: AppDimensions.width * 0.43,
+                    child: CustomTextfield(
+                      controller: widget.stateController,
+                      type: TextInputType.text,
+                      label: "State".tr,
+                      focusNode: stateFocusNode,
+                      onFieldSubmitted: (_) => Utils.changeNodeFocus(
+                          context, stateFocusNode, pincodeFocusNode),
+                      onChanged: (_) =>
+                          widget.formKey.currentState?.validate(),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please write your state'.tr;
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                ],
               ),
               sizedBox(),
               CustomTextfield(
                 controller: widget.pincodeController,
                 type: TextInputType.number,
                 label: "Pincode".tr,
-                onChanged: (value){
-                  widget.formKey.currentState?.validate();
-                },
                 focusNode: pincodeFocusNode,
-                onFieldSubmitted: (value){
-                  pincodeFocusNode.unfocus();
-                },
                 maxLength: 6,
+                onFieldSubmitted: (_) => pincodeFocusNode.unfocus(),
+                onChanged: (_) => widget.formKey.currentState?.validate(),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please write your pincode'.tr;
                   }
-                  if(!RegExp(RegexConstant.otpOrPincodeValidationRegex).hasMatch(value))
-                  {
+                  if (!RegExp(RegexConstant.otpOrPincodeValidationRegex)
+                      .hasMatch(value)) {
                     return 'Pincode must be 6 digits only'.tr;
                   }
                   return null;
                 },
               ),
-
               sizedBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Working Time".tr,
-                    style: robotoBold.copyWith(
-                      color: black,
-                      fontSize: 20,
-                    ),
+                    style: robotoBold.copyWith(color: black, fontSize: 20),
                   ),
                 ],
               ),
@@ -390,22 +332,20 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: AppDimensions.width*0.43,
+                    width: AppDimensions.width * 0.43,
                     child: CustomTextfield(
                       controller: widget.startTimeController,
                       type: TextInputType.number,
-                      readOnly : true,
-                      onTap :  () {
-                        _selectTime(context, widget.startTimeController);
-                      },
-                      suffixIcon : Icon(Icons.access_time),
+                      readOnly: true,
+                      onTap: () =>
+                          _selectTime(context, widget.startTimeController),
+                      suffixIcon: const Icon(Icons.access_time),
                       label: "Start Time".tr,
-                      onChanged: (value){
-                        widget.formKey.currentState?.validate();
-                      },
+                      onChanged: (_) =>
+                          widget.formKey.currentState?.validate(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please Select Start Time'.tr;
+                          return 'Please select start time'.tr;
                         }
                         return null;
                       },
@@ -413,55 +353,55 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                   ),
                   const Expanded(child: SizedBox()),
                   SizedBox(
-                    width: AppDimensions.width*0.43,
+                    width: AppDimensions.width * 0.43,
                     child: CustomTextfield(
                       controller: widget.endTimeController,
                       type: TextInputType.number,
-                      readOnly : true,
-                      onTap :  () {
-                        _selectTime(context, widget.endTimeController);
-                      },
-                      suffixIcon : Icon(Icons.access_time),
+                      readOnly: true,
+                      onTap: () =>
+                          _selectTime(context, widget.endTimeController),
+                      suffixIcon: const Icon(Icons.access_time),
                       label: "End Time".tr,
-                      onChanged: (value){
-                        widget.formKey.currentState?.validate();
-                      },
+                      onChanged: (_) =>
+                          widget.formKey.currentState?.validate(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please Select End Time'.tr;
+                          return 'Please select end time'.tr;
                         }
                         return null;
                       },
                     ),
                   ),
-
                 ],
-
               ),
               sizedBox(),
               Container(
-                padding: const EdgeInsets.only(top:0,bottom: 0,right:10.0,left: 10),
+                padding: const EdgeInsets.only(
+                    top: 0, bottom: 0, right: 10.0, left: 10),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(8),
                   border: Border.all(color: Colors.grey),
                 ),
                 child: Theme(
-                  data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                  data: Theme.of(context)
+                      .copyWith(dividerColor: Colors.transparent),
                   child: ExpansionTile(
-                      onExpansionChanged: (isExpansion)
-                      {
-                        if(isExpansion)
-                          {
-                            FocusScope.of(context).requestFocus(workingTimeFocusNode);
-                          }
-                      },
-                      tilePadding: EdgeInsets.zero, // Removes padding around the tile
-                      collapsedBackgroundColor: Colors.transparent,
-                    title: Text("Select Working Days".tr, style: const TextStyle(
-                      fontSize: AppDimensions.regularFontSize,
-                      fontWeight: FontWeight.bold,
-                    )),
-                    children: [ ...widget.workingDays.keys.map((day) {
+                    onExpansionChanged: (expanding) {
+                      if (expanding) {
+                        FocusScope.of(context)
+                            .requestFocus(workingTimeFocusNode);
+                      }
+                    },
+                    tilePadding: EdgeInsets.zero,
+                    collapsedBackgroundColor: Colors.transparent,
+                    title: Text(
+                      "Select Working Days".tr,
+                      style: const TextStyle(
+                        fontSize: AppDimensions.regularFontSize,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    children: widget.workingDays.keys.map((day) {
                       return CheckboxListTile(
                         title: Text(day.tr),
                         value: widget.workingDays[day],
@@ -471,13 +411,11 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
                           });
                         },
                       );
-                    }).toList(), ]
+                    }).toList(),
                   ),
                 ),
               ),
-
-              sizedBox()
-      
+              sizedBox(),
             ],
           ),
         ),
@@ -485,9 +423,5 @@ class _BusinessDetailsPageState extends State<Businessdetailspage> {
     );
   }
 
-  Widget sizedBox() {
-    return const SizedBox(
-      height: 15,
-    );
-  }
+  Widget sizedBox() => const SizedBox(height: 15);
 }

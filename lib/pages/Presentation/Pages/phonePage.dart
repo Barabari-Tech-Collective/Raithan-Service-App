@@ -8,7 +8,7 @@ class PhonePage extends StatelessWidget {
   final TextEditingController phoneController;
   final GlobalKey<FormState> formKey;
 
-  PhonePage({
+  const PhonePage({
     super.key,
     required this.phoneController,
     required this.formKey,
@@ -17,7 +17,10 @@ class PhonePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: AppDimensions.formFieldPadding, horizontal: AppDimensions.formFieldPadding),
+      padding: EdgeInsets.symmetric(
+        vertical: AppDimensions.formFieldPadding,
+        horizontal: AppDimensions.formFieldPadding,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -29,7 +32,7 @@ class PhonePage extends StatelessWidget {
             ),
           ),
           Text(
-            "Enter your 10-digit mobile number".tr,
+            "Enter your mobile number".tr,
             style: robotoBold.copyWith(
               color: Colors.black45,
               fontSize: 12,
@@ -46,15 +49,27 @@ class PhonePage extends StatelessWidget {
                   controller: phoneController,
                   type: TextInputType.phone,
                   label: 'Phone Number'.tr,
-                  maxLength: 10,
+                  maxLength: 20,
                   isBuildCounterRequired: true,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
+                    if (value == null || value.trim().isEmpty) {
                       return 'Please enter a phone number'.tr;
                     }
-                    if (!RegExp(r'^\+?[0-9]{10,15}$').hasMatch(value)) {
+
+                    // Reject letters and other symbols.
+                    if (!RegExp(r'^[0-9+\-\s]+$').hasMatch(value)) {
                       return 'Please enter a valid phone number'.tr;
                     }
+
+                    // Remove spaces and hyphens for length checking.
+                    final digitsOnly =
+                        value.replaceAll(RegExp(r'[^0-9]'), '');
+
+                    if (digitsOnly.length < 10 ||
+                        digitsOnly.length > 15) {
+                      return 'Please enter a valid phone number'.tr;
+                    }
+
                     return null;
                   },
                 ),
